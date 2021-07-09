@@ -271,44 +271,42 @@ function addHtml(title, content, username, modifiedAt, id, views){
 }
 
 function addMyCommentHtml(commentContent, username, modifiedAt, postId, commentId){
-    let tempHtml = `<li>
-                            <div class="comment-box" id="comment-box">
-                                <span class="comment-username-box" id="comment-username">${username}</span>
-                                <span style="text-align: left; font-size: 11px; font-wight:normal; vertical-align: bottom " id="comment-modifiedAt">${modifiedAt}</span>
+    let tempHtml = `<li id = "comment-edit-box-my">
+                            <div class="comment-box" id="${commentId}-comment-box">
+                                <span class="comment-username-box" id="${commentId}-comment-username">${username}</span>
+                                <span style="text-align: left; font-size: 11px; font-wight:normal; vertical-align: bottom " id="${commentId}-comment-modifiedAt">${modifiedAt}</span>
                                 <span style="font-weight: normal; font-size: 15px;" >
-                                <div style="text-align: left; font-wight:normal; margin: 9px 0 0 9px" id="comment-content">${commentContent}</div>
+                                <div style="text-align: left; font-wight:normal; margin: 9px 0 0 9px" id="${commentId}-comment-content">${commentContent}</div>
                                 <div style="text-align: right">
-                                    <button type="button" class="btn btn-light" style="font-size: 12px; padding: 3px; color: #868686" onclick="editMode(${postId},${commentId})" id="comment-edit-btn">수정</button>
-                                    <button type="button" class="btn btn-light" style="font-size: 12px; padding: 3px; color: #868686" onclick="deleteComment(${postId},${commentId})" id="comment-delete-btn">삭제</button>     
+                                    <button type="button" class="btn btn-light" style="font-size: 12px; padding: 3px; color: #868686" onclick="editMode(${postId},${commentId})" id="${commentId}-comment-edit-btn">수정</button>
+                                    <button type="button" class="btn btn-light" style="font-size: 12px; padding: 3px; color: #868686" onclick="deleteComment(${postId},${commentId})" id="${commentId}-comment-delete-btn">삭제</button>     
                                 </div>
                                 </span>
                             </div>
                         </li>`
     $('#comment-list').append(tempHtml)
     $('#comment-text').val('')
-
-
-
 }
 
 function editMode(postId, commentId){
+    $(`#${commentId}-comment-username`).hide()
+    $(`#${commentId}-comment-content`).hide()
+    $(`#${commentId}-comment-modifiedAt`).hide()
+    $(`#${commentId}-comment-edit-btn`).hide()
+    $(`#${commentId}-comment-delete-btn`).hide()
 
-    $('#comment-username').hide()
-    $('#comment-content').hide()
-    $('#comment-modifiedAt').hide()
-    $('#comment-edit-btn').hide()
-    $('#comment-delete-btn').hide()
     commentContent = ''
     $.ajax({
         type: "GET",
         url: `/api/comments/name/${commentId}`,
         success: function (response) {
-            let temphtml=`           
-                        <div  class="input-group mb-3" id="comment-edit-box">
+            let temphtml=`          
+                        <div class="input-group mb-3" id="comment-edit-box">
                             <textarea type="text" class="form-control"  aria-label="Recipient's username" aria-describedby="button-addon2" id="comment-edit" rows="3"></textarea>
                             <button class="btn btn-outline-secondary" type="button" id="comment-submit-btn" onClick="editComment(${commentId},${postId})">수정</button>
-                        </div>`
-            $('#comment-box').append(temphtml)
+                        </div>
+                        `
+            $(`#${commentId}-comment-box`).append(temphtml)
             $('#comment-edit').val(response)
         }
     })

@@ -22,6 +22,7 @@ public class CommentController {
     private final CommentRepository commentRepository;
     private final CommentService commentService;
 
+    //댓글 저장
     @PostMapping("/api/comments")
     public String createComment(@RequestBody CommentRequestDto commentRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         String username;
@@ -34,24 +35,27 @@ public class CommentController {
         return "fail";
     }
 
+    //모든 댓글 읽기
     @GetMapping("api/comments/{id}")
     public List<Comment> readComment(@PathVariable Long id) {
         List<Comment> comments = commentRepository.findByFollowingCommentIdOrderByModifiedAtDesc(id);
         return comments;
     }
 
+    //댓글 내용 가져오기
     @GetMapping("api/comments/name/{id}")
     public String readCommentName(@PathVariable Long id) {
         return commentRepository.findById(id).get().getCommentContent();
     }
 
+    //댓글 쓰기
     @PutMapping("api/comments/{commentId}")
     public Long updatePost(@PathVariable Long commentId, @RequestBody CommentRequestDto commentRequestDto){
         commentService.updateComment(commentId, commentRequestDto);
         return commentId;
     }
 
-
+    //댓글 지우기
     @DeleteMapping("api/comments/{id}")
     public void deleteComment(@PathVariable Long id){
         commentRepository.deleteById(id);

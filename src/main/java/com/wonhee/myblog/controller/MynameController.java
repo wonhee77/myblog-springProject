@@ -11,6 +11,7 @@ import java.util.List;
 @RestController
 public class MynameController {
 
+    //접속한 사람 닉네임 가져오기
     @GetMapping( "api/myname")
     public String getMyname(@AuthenticationPrincipal UserDetailsImpl userDetails) {
         if (userDetails != null) {

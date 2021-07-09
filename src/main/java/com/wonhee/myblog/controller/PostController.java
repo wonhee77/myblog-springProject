@@ -18,11 +18,13 @@ public class PostController {
     private final PostRepository repository;
     private final PostService postService;
 
+    //게시글 모두 읽기
     @GetMapping("api/posts")
     public List<Post> readPosts(){
         return postService.getPosts();
     }
 
+    //게시글 작성
     @PostMapping("api/posts")
     public Post creatPost(@RequestBody PostRequestDto postRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails){
         String username = userDetails.getUser().getUsername();
@@ -31,6 +33,7 @@ public class PostController {
         return post;
     }
 
+    // 게시글 하나 찾기 + 조회수
     @GetMapping("api/posts/{id}")
     public Post readPost(@PathVariable Long id){
         Post post = repository.findById(id).orElseThrow(
@@ -40,12 +43,14 @@ public class PostController {
         return post;
     }
 
+    //게시글 수정
     @PutMapping("api/posts/{id}")
     public Long updatePost(@PathVariable Long id, @RequestBody PostRequestDto postRequestDto){
         postService.update(id, postRequestDto);
         return id;
     }
 
+    //게시글 삭제
     @DeleteMapping("api/posts/{id}")
     public Long deletePost(@PathVariable Long id){
         repository.deleteById(id);

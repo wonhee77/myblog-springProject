@@ -12,7 +12,6 @@ import javax.persistence.*;
 
 @Entity
 @Getter
-@Setter
 @NoArgsConstructor
 public class Comment extends Timestamped {
 
