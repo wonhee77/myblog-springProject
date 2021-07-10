@@ -48,7 +48,7 @@ public class CommentController {
         return commentRepository.findById(id).get().getCommentContent();
     }
 
-    //댓글 쓰기
+    //댓글 수정
     @PutMapping("api/comments/{commentId}")
     public Long updatePost(@PathVariable Long commentId, @RequestBody CommentRequestDto commentRequestDto){
         commentService.updateComment(commentId, commentRequestDto);
